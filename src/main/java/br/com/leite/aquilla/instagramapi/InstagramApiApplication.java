@@ -79,8 +79,5 @@ public class InstagramApiApplication implements CommandLineRunner {
 
         var post1 = Post.builder().author(user1).describe("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur maximus rutrum blandit.").build();
         postRepository.save(post1);
-
-        var file1 = File.builder().name("sum").path("http://localhost:8080/resources/sum.jpg").post(post1).build();
-        fileRepository.save(file1);
     }
 }
