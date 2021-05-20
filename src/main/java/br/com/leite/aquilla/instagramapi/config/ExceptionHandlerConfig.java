@@ -1,32 +1,63 @@
 package br.com.leite.aquilla.instagramapi.config;
 
-import br.com.leite.aquilla.instagramapi.exception.NotFoundException;
+import br.com.leite.aquilla.instagramapi.exception.BusinessException;
 import br.com.leite.aquilla.instagramapi.model.StandardError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
+import java.util.List;
 
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class ExceptionHandlerConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerExceptionHandler.class);
+    // Spring and Java Exceptions
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<StandardError> RuntimeException(RuntimeException e, HttpServletRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+        var standardError = StandardError.create(status.value(), request.getRequestURI());
+        standardError.getErrors().add(e.getMessage());
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<StandardError> NotFoundException(NotFoundException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        StandardError standardError = StandardError.builder()
-                .timestamp(Instant.now())
-                .status(status.value())
-                .path(request.getRequestURI())
-                .message(e.getMessage())
-                .build();
-        LOGGER.info(standardError.toString());
         return ResponseEntity.status(status).body(standardError);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<StandardError> MethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+        var standardError = StandardError.create(status.value(), request.getRequestURI());
+
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            String message = fieldError.getField() + " " + fieldError.getDefaultMessage();
+            standardError.getErrors().add(message);
+        }
+
+        return ResponseEntity.status(status).body(standardError);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    protected ResponseEntity<StandardError> InvalidFormatException(InvalidFormatException e, HttpServletRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+        var standardError = StandardError.create(status.value(), request.getRequestURI());
+        standardError.getErrors().add(e.getOriginalMessage());
+
+        return ResponseEntity.status(status).body(standardError);
+    }
+
+    // Custom project Exceptions
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<StandardError> BusinessException(BusinessException e, HttpServletRequest request) {
+        var standardError = StandardError.create(e.getHttpStatus().value(), request.getRequestURI());
+
+        for (String x : e.getErrors()) {
+            standardError.getErrors().add(x);
+        }
+
+        return ResponseEntity.status(e.getHttpStatus().value()).body(standardError);
     }
 }

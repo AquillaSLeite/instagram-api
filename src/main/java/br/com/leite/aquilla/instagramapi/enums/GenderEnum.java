@@ -16,7 +16,7 @@ public enum GenderEnum {
     private final Character acronym;
     private final String describe;
 
-    public static GenderEnum valueOf(Character code) {
+    public static GenderEnum valueOf(final Character code) {
         for (GenderEnum value : GenderEnum.values()) {
             if (value.getAcronym().equals(code)) {
                 return value;
@@ -28,12 +28,12 @@ public enum GenderEnum {
     @Converter
     public static class GenderEnumConverter implements AttributeConverter<GenderEnum, Character> {
         @Override
-        public Character convertToDatabaseColumn(GenderEnum attribute) {
+        public Character convertToDatabaseColumn(final GenderEnum attribute) {
             return attribute.getAcronym();
         }
 
         @Override
-        public GenderEnum convertToEntityAttribute(Character dbData) {
+        public GenderEnum convertToEntityAttribute(final Character dbData) {
             return GenderEnum.valueOf(dbData);
         }
     }

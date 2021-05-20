@@ -1,7 +1,12 @@
 package br.com.leite.aquilla.instagramapi.exception;
 
-public class NotFoundException extends RuntimeException {
-    public NotFoundException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
+
+public class NotFoundException extends BusinessException {
+
+    public NotFoundException(final String message) {
+        super(HttpStatus.NOT_FOUND, List.of(message));
     }
 }

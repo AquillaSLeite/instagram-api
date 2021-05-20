@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -19,5 +21,13 @@ public class StandardError {
     private Instant timestamp;
     private Integer status;
     private String path;
-    private String message;
+    private final List<String> errors = new ArrayList<>();
+
+    public static StandardError create(Integer status, String uri) {
+        return StandardError.builder()
+                .timestamp(Instant.now())
+                .status(status)
+                .path(uri)
+                .build();
+    }
 }
