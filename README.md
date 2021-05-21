@@ -4,7 +4,7 @@ Projeto com finalidade de simular um back-end do aplicativo instagram
 ```
 Java 11
 Conta AWS
-  Usuário com credências de acesso e configurado para acessar o bucket
+  Usuário com credênciais de acesso e configurado para acessar o bucket
   Bucket S3 
 Git
 ```
