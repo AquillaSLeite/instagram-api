@@ -1,4 +1,5 @@
 # Projeto back-end api instagram
+Projeto com finalidade de simular um back-end do aplicativo instagram
 ## Pré-requisitos:
 ```
 Java 11
@@ -16,6 +17,29 @@ Criar variáveis de ambientes com os nomes:
 ```
 #### application.properties
 na propriedade aws.s3.bucket-name deve ser colocado o nome do bucket criado na aws
+
+## Rotas
+#### User
+```
+POST /users
+DELETE /users/{id}
+
+GET /users
+GET /users/{id}
+GET /users/{id}/following
+GET /users/{id}/followers
+GET /users/{id}/posts
+
+PUT /users/{id}
+
+PATCH /users/{id}/following/add
+PATCH /users/{id}/following/remove
+```
+#### Post
+```
+POST /posts
+DELETE /posts/{id}
+```
 
 ## Executando o projeto
 Para executar o projeto no terminal, digite o seguinte comando:
