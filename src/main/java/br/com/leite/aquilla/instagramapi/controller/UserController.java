@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,10 +36,10 @@ public interface UserController {
     @GetMapping("{id}/following")
     ResponseEntity<List<UserDto>> following(@PathVariable Long id);
 
-    @PatchMapping("{id}/following/add")
+    @PostMapping("{id}/following/add")
     ResponseEntity<UserDto> addFollowing(@PathVariable Long id, @RequestBody @Valid FollowDto dto);
 
-    @PatchMapping("{id}/following/remove")
+    @PostMapping("{id}/following/remove")
     ResponseEntity<Void> removeFollowing(@PathVariable Long id, @RequestBody @Valid FollowDto dto);
 
     @GetMapping("{id}/followers")

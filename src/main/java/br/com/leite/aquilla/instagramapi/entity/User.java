@@ -24,6 +24,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,6 +57,11 @@ public class User {
     @Column(nullable = false, length = 1)
     private AccountTypeEnum accountType;
 
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -70,7 +76,12 @@ public class User {
     private final Set<User> followers = new HashSet<>();
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private final Set<Post> posts = new HashSet<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private final Set<Comment> comments = new HashSet<>();
 }

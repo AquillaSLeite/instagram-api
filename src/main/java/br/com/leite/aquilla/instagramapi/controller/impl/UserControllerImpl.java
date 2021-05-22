@@ -5,7 +5,7 @@ import br.com.leite.aquilla.instagramapi.model.dto.FollowDto;
 import br.com.leite.aquilla.instagramapi.model.dto.UserDto;
 import br.com.leite.aquilla.instagramapi.model.dto.UserPostsDto;
 import br.com.leite.aquilla.instagramapi.service.UserService;
-import br.com.leite.aquilla.instagramapi.util.UtilsController;
+import br.com.leite.aquilla.instagramapi.util.UtilController;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class UserControllerImpl implements UserController {
 
     public ResponseEntity<UserDto> save(final UserDto dto) {
         var userDto = userService.save(dto);
-        return ResponseEntity.created(UtilsController.generatedUri(userDto.getId())).body(userDto);
+        return ResponseEntity.created(UtilController.generatedUri(userDto.getId())).body(userDto);
     }
 
     public ResponseEntity<UserDto> update(final Long id, final UserDto dto) {

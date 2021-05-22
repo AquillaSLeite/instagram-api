@@ -18,7 +18,7 @@ public class ExceptionHandlerConfig {
 
     // Spring and Java Exceptions
     @ExceptionHandler(RuntimeException.class)
-    protected ResponseEntity<StandardError> RuntimeException(RuntimeException e, HttpServletRequest request) {
+    protected ResponseEntity<StandardError> runtimeException(RuntimeException e, HttpServletRequest request) {
         var status = HttpStatus.BAD_REQUEST;
         var standardError = StandardError.create(status.value(), request.getRequestURI());
         standardError.getErrors().add(e.getMessage());
@@ -27,7 +27,7 @@ public class ExceptionHandlerConfig {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<StandardError> MethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+    protected ResponseEntity<StandardError> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
         var status = HttpStatus.BAD_REQUEST;
         var standardError = StandardError.create(status.value(), request.getRequestURI());
 
@@ -41,7 +41,7 @@ public class ExceptionHandlerConfig {
     }
 
     @ExceptionHandler(InvalidFormatException.class)
-    protected ResponseEntity<StandardError> InvalidFormatException(InvalidFormatException e, HttpServletRequest request) {
+    protected ResponseEntity<StandardError> invalidFormatException(InvalidFormatException e, HttpServletRequest request) {
         var status = HttpStatus.BAD_REQUEST;
         var standardError = StandardError.create(status.value(), request.getRequestURI());
         standardError.getErrors().add(e.getOriginalMessage());
@@ -51,7 +51,7 @@ public class ExceptionHandlerConfig {
 
     // Custom project Exceptions
     @ExceptionHandler(BusinessException.class)
-    protected ResponseEntity<StandardError> BusinessException(BusinessException e, HttpServletRequest request) {
+    protected ResponseEntity<StandardError> businessException(BusinessException e, HttpServletRequest request) {
         var standardError = StandardError.create(e.getHttpStatus().value(), request.getRequestURI());
 
         for (String x : e.getErrors()) {

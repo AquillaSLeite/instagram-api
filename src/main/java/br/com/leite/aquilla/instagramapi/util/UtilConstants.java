@@ -1,6 +1,6 @@
 package br.com.leite.aquilla.instagramapi.util;
 
-public interface UtilsConstants {
+public interface UtilConstants {
 
     String USER_NOT_FOUND = "? with id ? not found";
     String USERNAME_ALREADY_EXISTS = "Username already exists";

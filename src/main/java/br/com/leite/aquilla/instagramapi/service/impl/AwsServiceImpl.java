@@ -4,7 +4,7 @@ import br.com.leite.aquilla.instagramapi.config.AwsConfig;
 import br.com.leite.aquilla.instagramapi.entity.File;
 import br.com.leite.aquilla.instagramapi.exception.ServerException;
 import br.com.leite.aquilla.instagramapi.service.AwsService;
-import br.com.leite.aquilla.instagramapi.util.UtilsErrorCode;
+import br.com.leite.aquilla.instagramapi.util.UtilErrorCode;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -37,10 +37,10 @@ public class AwsServiceImpl implements AwsService {
             return awsConfig.getUrlS3() + name;
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
-            throw new ServerException(UtilsErrorCode.AWS_SERVICE_EXCEPTION);
+            throw new ServerException(UtilErrorCode.AWS_SERVICE_EXCEPTION);
         } catch (SdkClientException e) {
             e.printStackTrace();
-            throw new ServerException(UtilsErrorCode.AWS_SDK_EXCEPTION);
+            throw new ServerException(UtilErrorCode.AWS_SDK_EXCEPTION);
         }
     }
 
@@ -59,10 +59,10 @@ public class AwsServiceImpl implements AwsService {
             awsConfig.s3Client().deleteObjects(delObjReq);
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
-            throw new ServerException(UtilsErrorCode.AWS_SERVICE_EXCEPTION);
+            throw new ServerException(UtilErrorCode.AWS_SERVICE_EXCEPTION);
         } catch (SdkClientException e) {
             e.printStackTrace();
-            throw new ServerException(UtilsErrorCode.AWS_SDK_EXCEPTION);
+            throw new ServerException(UtilErrorCode.AWS_SDK_EXCEPTION);
         }
     }
 }

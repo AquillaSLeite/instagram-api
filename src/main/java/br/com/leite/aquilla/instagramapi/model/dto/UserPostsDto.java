@@ -1,6 +1,5 @@
 package br.com.leite.aquilla.instagramapi.model.dto;
 
-import br.com.leite.aquilla.instagramapi.entity.File;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class UserPostsDto {
     private Long id;
-    private String describe;
+    private String text;
     private List<FileDto> files;
 }

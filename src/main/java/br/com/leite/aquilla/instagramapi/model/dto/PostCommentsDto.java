@@ -5,15 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostDto {
+public class PostCommentsDto {
     private Long id;
     private String text;
     private Long user;
-    private List<FileDto> files;
 }

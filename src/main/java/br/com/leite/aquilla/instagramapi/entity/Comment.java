@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "files")
+@Table(name = "comments")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,16 +27,20 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode(of = "id")
 @ToString
-public class File {
+public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
-    private String path;
+    private String text;
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "user", nullable = false)
+    private User user;
 
     @ToString.Exclude
     @ManyToOne

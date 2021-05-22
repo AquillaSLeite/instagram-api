@@ -21,6 +21,9 @@ Na propriedade aws.s3.bucket-name deve ser colocado o nome do bucket criado na a
 #### User
 ```
 POST /users
+POST /users/{id}/following/add
+POST /users/{id}/following/remove
+
 DELETE /users/{id}
 
 GET /users
@@ -30,14 +33,15 @@ GET /users/{id}/followers
 GET /users/{id}/posts
 
 PUT /users/{id}
-
-PATCH /users/{id}/following/add
-PATCH /users/{id}/following/remove
 ```
 #### Post
 ```
 POST /posts
+
 DELETE /posts/{id}
+
+GET /posts/{id}
+GET /posts/{id}/comments
 ```
 ## Executando o projeto
 Para executar o projeto no terminal, digite o seguinte comando:

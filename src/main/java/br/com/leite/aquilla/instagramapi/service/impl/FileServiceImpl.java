@@ -10,13 +10,11 @@ import br.com.leite.aquilla.instagramapi.service.AwsService;
 import br.com.leite.aquilla.instagramapi.service.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,8 +26,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class FileServiceImpl implements FileService {
 
-    @Value("${file.upload-dir}")
-    private final Path pathStorageLocation = Paths.get("{1}");
     private final FileRepository fileRepository;
     private final FileMapper fileMapper;
     private final AwsService awsService;
@@ -48,6 +44,7 @@ public class FileServiceImpl implements FileService {
                         .name(name)
                         .path(awsService.saveAwsS3(file, name))
                         .post(post)
+                        .createdAt(LocalDateTime.now())
                         .build());
             } catch (IOException e) {
                 awsService.deleteAwsS3(fileList);

@@ -10,7 +10,7 @@ import br.com.leite.aquilla.instagramapi.model.dto.UserDto;
 import br.com.leite.aquilla.instagramapi.model.dto.UserPostsDto;
 import br.com.leite.aquilla.instagramapi.repository.UserRepository;
 import br.com.leite.aquilla.instagramapi.service.UserService;
-import br.com.leite.aquilla.instagramapi.util.UtilsConstants;
+import br.com.leite.aquilla.instagramapi.util.UtilConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
     public UserDto save(final UserDto dto) {
         var user = userMapper.toEntity(dto);
         user.setId(null);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         userRulesValidation(user);
         return userMapper.toDTO(userRepository.save(user));
     }
@@ -43,6 +46,8 @@ public class UserServiceImpl implements UserService {
 
         var user = userMapper.toEntity(dto);
         user.setId(userDb.getId());
+        user.setCreatedAt(userDb.getCreatedAt());
+        user.setUpdatedAt(LocalDateTime.now());
         userRulesValidation(user);
 
         return userMapper.toDTO(userRepository.save(user));
@@ -76,11 +81,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addFollowing(final Long id, final FollowDto dto) {
         if (id.equals(dto.getUser()))
-            throw new BadRequestException(UtilsConstants.IDENTITY_FOLLOW_USER);
+            throw new BadRequestException(UtilConstants.IDENTITY_FOLLOW_USER);
 
         var user = userById(id);
         var userFollowing = userById(dto.getUser());
 
+        // TODO: experimentar outra forma de inserir um novo seguidor sem instanciar todos as pessoas que o usuário está seguindo
         user.getFollowing().add(userFollowing);
         userRepository.save(user);
     }
@@ -112,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User userById(final Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(UtilsConstants.entityNotFoundReplace(User.class.getSimpleName(), id)));
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(UtilConstants.entityNotFoundReplace(User.class.getSimpleName(), id)));
     }
 
     private void userRulesValidation(final User user) {
@@ -120,14 +126,14 @@ public class UserServiceImpl implements UserService {
 
         if (null == user.getId()) {
             if (userRepository.existsByUsername(user.getUsername()))
-                errors.add(UtilsConstants.USERNAME_ALREADY_EXISTS);
+                errors.add(UtilConstants.USERNAME_ALREADY_EXISTS);
             if (userRepository.existsByEmail(user.getEmail()))
-                errors.add(UtilsConstants.EMAIL_ALREADY_EXISTS);
+                errors.add(UtilConstants.EMAIL_ALREADY_EXISTS);
         } else {
             if (userRepository.existsByUsernameAndIdNot(user.getUsername(), user.getId()))
-                errors.add(UtilsConstants.USERNAME_ALREADY_EXISTS);
+                errors.add(UtilConstants.USERNAME_ALREADY_EXISTS);
             if (userRepository.existsByEmailAndIdNot(user.getEmail(), user.getId()))
-                errors.add(UtilsConstants.EMAIL_ALREADY_EXISTS);
+                errors.add(UtilConstants.EMAIL_ALREADY_EXISTS);
         }
 
         if (!errors.isEmpty())

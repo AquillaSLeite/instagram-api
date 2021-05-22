@@ -11,7 +11,7 @@ public abstract class BusinessException extends RuntimeException {
     private final HttpStatus httpStatus;
     private final List<String> errors;
 
-    public BusinessException(final HttpStatus httpStatus, final List<String> errors) {
+    protected BusinessException(final HttpStatus httpStatus, final List<String> errors) {
         this.httpStatus = httpStatus;
         this.errors = errors;
     }

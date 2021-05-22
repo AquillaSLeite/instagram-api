@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,15 +39,22 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String describe;
+    private String text;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "author", nullable = false)
-    private User author;
+    @JoinColumn(name = "user", nullable = false)
+    private User user;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private final Set<File> files = new HashSet<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private final Set<Comment> comments = new HashSet<>();
 }

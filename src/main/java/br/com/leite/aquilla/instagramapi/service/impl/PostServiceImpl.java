@@ -4,16 +4,22 @@ import br.com.leite.aquilla.instagramapi.entity.Post;
 import br.com.leite.aquilla.instagramapi.exception.NotFoundException;
 import br.com.leite.aquilla.instagramapi.mapper.PostMapper;
 import br.com.leite.aquilla.instagramapi.model.dto.FileDto;
+import br.com.leite.aquilla.instagramapi.model.dto.PostCommentsDto;
 import br.com.leite.aquilla.instagramapi.model.dto.PostDto;
 import br.com.leite.aquilla.instagramapi.repository.PostRepository;
 import br.com.leite.aquilla.instagramapi.service.FileService;
 import br.com.leite.aquilla.instagramapi.service.PostService;
 import br.com.leite.aquilla.instagramapi.service.UserService;
-import br.com.leite.aquilla.instagramapi.util.UtilsConstants;
+import br.com.leite.aquilla.instagramapi.util.UtilConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -26,16 +32,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto save(final PostDto dto, final MultipartFile[] files) {
-        var post = this.postMapper.toEntity(dto);
-        post.setAuthor(userService.userById(dto.getAuthor()));
+        var post = postMapper.toEntity(dto);
+        post.setUser(userService.userById(dto.getUser()));
+        post.setCreatedAt(LocalDateTime.now());
 
         var postDb = postRepository.save(post);
-        var postDto = postMapper.toDTO(postDb);
+        var postDbDto = postMapper.toDTO(postDb);
 
         for (FileDto file : fileService.save(files, postDb)) {
-            postDto.getFiles().add(file);
+            postDbDto.getFiles().add(file);
         }
-        return postDto;
+        return postDbDto;
     }
 
     @Override
@@ -45,7 +52,21 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
     }
 
-    private Post postById(final Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new NotFoundException(UtilsConstants.entityNotFoundReplace(Post.class.getSimpleName(), id)));
+    @Override
+    public PostDto findById(@NotNull Long id) {
+        return postMapper.toDTO(postById(id));
+    }
+
+    @Override
+    public List<PostCommentsDto> comments(@NotNull Long id) {
+        return postById(id).getComments()
+                .stream()
+                .map(postMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Post postById(final Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new NotFoundException(UtilConstants.entityNotFoundReplace(Post.class.getSimpleName(), id)));
     }
 }
