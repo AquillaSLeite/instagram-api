@@ -12,8 +12,8 @@ import javax.validation.Valid;
 public interface CommentController {
 
     @PostMapping
-    ResponseEntity<Void> addComment(@PathVariable Long id, @RequestBody @Valid CommentDto dto);
+    ResponseEntity<CommentDto> save(@RequestBody @Valid CommentDto dto);
 
-    @DeleteMapping
-    ResponseEntity<Void> removeComment(@PathVariable Long id, @RequestBody @Valid CommentDto dto);
+    @DeleteMapping("{id}")
+    ResponseEntity<Void> delete(@PathVariable Long id);
 }

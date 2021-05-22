@@ -14,10 +14,4 @@ public interface CommentService {
 
     @Transactional
     void delete(@NotNull Long id);
-
-    @Transactional
-    void addComment(@NotNull CommentDto dto);
-
-    @Transactional
-    void removeComment(@NotNull CommentDto dto);
 }

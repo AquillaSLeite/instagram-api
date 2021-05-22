@@ -17,22 +17,30 @@ Criar variáveis de ambientes com os nomes:
 ```
 #### application.properties
 Na propriedade aws.s3.bucket-name deve ser colocado o nome do bucket criado na aws
+## Dependências
+```
+  Spring boot
+  Lombok
+  Mapstruct
+  AmazonAws
+  H2
+```
 ## Rotas
 #### User
 ```
 POST /users
 POST /users/{id}/following/add
-POST /users/{id}/following/remove
+
+PUT /users/{id}
 
 DELETE /users/{id}
+DELETE /users/{id}/following/{following}/remove
 
 GET /users
 GET /users/{id}
 GET /users/{id}/following
 GET /users/{id}/followers
 GET /users/{id}/posts
-
-PUT /users/{id}
 ```
 #### Post
 ```
@@ -42,6 +50,12 @@ DELETE /posts/{id}
 
 GET /posts/{id}
 GET /posts/{id}/comments
+```
+#### Comment
+```
+POST /comments
+
+DELETE /comments/{id}
 ```
 ## Executando o projeto
 Para executar o projeto no terminal, digite o seguinte comando:

@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Service
@@ -40,16 +39,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void delete(final Long id) {
         commentRepository.delete(commentById(id));
-    }
-
-    @Override
-    public void addComment(@NotNull CommentDto dto) {
-
-    }
-
-    @Override
-    public void removeComment(@NotNull CommentDto dto) {
-
     }
 
     public Comment commentById(final Long id) {

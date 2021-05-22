@@ -38,7 +38,7 @@ public interface UserService {
     void addFollowing(@NotNull Long id, @NotNull FollowDto dto);
 
     @Transactional
-    void removeFollowing(@NotNull Long id, @NotNull FollowDto dto);
+    void removeFollowing(@NotNull Long id, @NotNull Long following);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     List<UserDto> followers(@NotNull Long id);

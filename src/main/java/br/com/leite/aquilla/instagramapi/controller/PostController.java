@@ -15,9 +15,9 @@ import java.util.List;
 public interface PostController {
 
     @PostMapping
-    PostDto save(@RequestParam("files") MultipartFile[] files,
-                 @RequestParam("text") String text,
-                 @RequestParam("user") Long author);
+    ResponseEntity<PostDto> save(@RequestParam("files") MultipartFile[] files,
+                                 @RequestParam("text") String text,
+                                 @RequestParam("user") Long author);
 
     @DeleteMapping("{id}")
     ResponseEntity<Void> delete(@PathVariable Long id);

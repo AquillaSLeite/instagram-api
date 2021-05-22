@@ -92,9 +92,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeFollowing(final Long id, final FollowDto dto) {
+    public void removeFollowing(final Long id, final Long following) {
         var user = userById(id);
-        var userFollowing = userById(dto.getUser());
+        var userFollowing = userById(following);
 
         user.getFollowing().remove(userFollowing);
         userRepository.save(user);

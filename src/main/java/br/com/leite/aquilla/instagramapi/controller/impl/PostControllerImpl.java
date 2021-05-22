@@ -4,6 +4,7 @@ import br.com.leite.aquilla.instagramapi.controller.PostController;
 import br.com.leite.aquilla.instagramapi.model.dto.PostCommentsDto;
 import br.com.leite.aquilla.instagramapi.model.dto.PostDto;
 import br.com.leite.aquilla.instagramapi.service.PostService;
+import br.com.leite.aquilla.instagramapi.util.UtilController;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,13 @@ public class PostControllerImpl implements PostController {
     PostService postService;
 
     @Override
-    public PostDto save(final MultipartFile[] files, final String text, final Long user) {
+    public ResponseEntity<PostDto> save(final MultipartFile[] files, final String text, final Long user) {
         var postDto = PostDto.builder()
                 .text(text)
                 .user(user)
                 .build();
-        return postService.save(postDto, files);
+        var post = postService.save(postDto, files);
+        return ResponseEntity.created(UtilController.generatedUri(post.getId())).body(post);
     }
 
     @Override

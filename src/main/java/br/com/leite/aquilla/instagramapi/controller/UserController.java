@@ -21,11 +21,17 @@ public interface UserController {
     @PostMapping
     ResponseEntity<UserDto> save(@RequestBody @Valid UserDto dto);
 
+    @PostMapping("{id}/following/add")
+    ResponseEntity<Void> addFollowing(@PathVariable Long id, @RequestBody @Valid FollowDto dto);
+
     @PutMapping("{id}")
     ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserDto dto);
 
     @DeleteMapping("{id}")
     ResponseEntity<Void> delete(@PathVariable Long id);
+
+    @DeleteMapping("{id}/following/{following}/remove")
+    ResponseEntity<Void> removeFollowing(@PathVariable Long id, @PathVariable Long following);
 
     @GetMapping
     ResponseEntity<Page<UserDto>> index(@Valid Pageable page);
@@ -35,12 +41,6 @@ public interface UserController {
 
     @GetMapping("{id}/following")
     ResponseEntity<List<UserDto>> following(@PathVariable Long id);
-
-    @PostMapping("{id}/following/add")
-    ResponseEntity<UserDto> addFollowing(@PathVariable Long id, @RequestBody @Valid FollowDto dto);
-
-    @PostMapping("{id}/following/remove")
-    ResponseEntity<Void> removeFollowing(@PathVariable Long id, @RequestBody @Valid FollowDto dto);
 
     @GetMapping("{id}/followers")
     ResponseEntity<List<UserDto>> followers(@PathVariable Long id);

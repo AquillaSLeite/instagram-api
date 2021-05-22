@@ -28,12 +28,22 @@ public class UserControllerImpl implements UserController {
         return ResponseEntity.created(UtilController.generatedUri(userDto.getId())).body(userDto);
     }
 
+    public ResponseEntity<Void> addFollowing(final Long id, final FollowDto dto) {
+        userService.addFollowing(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
     public ResponseEntity<UserDto> update(final Long id, final UserDto dto) {
         return ResponseEntity.ok(userService.update(dto, id));
     }
 
     public ResponseEntity<Void> delete(final Long id) {
         userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<Void> removeFollowing(final Long id, final Long following) {
+        userService.removeFollowing(id, following);
         return ResponseEntity.noContent().build();
     }
 
@@ -47,16 +57,6 @@ public class UserControllerImpl implements UserController {
 
     public ResponseEntity<List<UserDto>> following(final Long id) {
         return ResponseEntity.ok(userService.following(id));
-    }
-
-    public ResponseEntity<UserDto> addFollowing(final Long id, final FollowDto dto) {
-        userService.addFollowing(id, dto);
-        return ResponseEntity.ok().build();
-    }
-
-    public ResponseEntity<Void> removeFollowing(final Long id, final FollowDto dto) {
-        userService.removeFollowing(id, dto);
-        return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity<List<UserDto>> followers(final Long id) {
