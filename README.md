@@ -34,7 +34,7 @@ POST /users/{id}/following/add
 PUT /users/{id}
 
 DELETE /users/{id}
-DELETE /users/{id}/following/{following}/remove
+DELETE /users/{id}/following/{following}
 
 GET /users
 GET /users/{id}

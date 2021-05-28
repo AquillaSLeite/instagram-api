@@ -30,7 +30,7 @@ public interface UserController {
     @DeleteMapping("{id}")
     ResponseEntity<Void> delete(@PathVariable Long id);
 
-    @DeleteMapping("{id}/following/{following}/remove")
+    @DeleteMapping("{id}/following/{following}")
     ResponseEntity<Void> removeFollowing(@PathVariable Long id, @PathVariable Long following);
 
     @GetMapping
